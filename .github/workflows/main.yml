@@ -1,20 +1,21 @@
 name: Build Sonic RD
 
-on: [push]
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/stephane-d/sgdk:latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Compile ROM
-        run: make -f /sgdk/makefile.gen
+      - name: Build SGDK ROM
+        uses: theophile/sgdk-action@v1
 
-      - name: Upload ROM Artifact
+      - name: Upload compiled ROM
         uses: actions/upload-artifact@v4
         with:
           name: sonic-rd-rom
